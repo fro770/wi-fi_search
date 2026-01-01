@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Android WiFi Password Recovery</title>
+    <style>
+        :root {
+            --primary: #2196F3;
+            --danger: #f44336;
+            --success: #4CAF50;
+            --warning: #ff9800;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .method-card {
+            border-left: 5px solid var(--primary);
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            transition: transform 0.3s;
+        }
+        
+        .method-card:hover {
+            transform: translateX(5px);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn-danger { background: var(--danger); }
+        .btn-success { background: var(--success); }
+        .btn-warning { background: var(--warning); }
+        
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .android-version {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin: 0 5px;
+        }
+        
+        .android-4 { background: #4CAF50; color: white; }
+        .android-9 { background: #FF9800; color: white; }
+        .android-10 { background: #F44336; color: white; }
+        
+        .qr-code {
+            display: inline-block;
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+            margin: 10px;
+        }
+        
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>📶 Android WiFi Password Recovery</h1>
+            <p>Выберите метод в зависимости от версии Android и наличия root прав</p>
+            
+            <div class="warning">
+                <strong>⚠️ ВНИМАНИЕ:</strong> Эти методы предназначены только для восстановления доступа к вашим собственным сетям WiFi на ваших устройствах.
+            </div>
+            
+            <div id="androidInfo" class="card"></div>
+        </div>
+        
+        <!-- Метод 1: Termux + Root -->
+        <div class="card">
+            <h2><span class="android-version android-4">4</span> <span class="android-version android-9">9</span> Метод 1: Termux + Root</h2>
+            
+            <div class="method-card">
+                <h3>📦 Установка Termux</h3>
+                <p>Скачайте Termux с F-Droid (не из Google Play):</p>
+                <a href="https://f-droid.org/packages/com.termux/" class="btn" target="_blank">Скачать Termux</a>
+            </div>
+            
+            <div class="method-card">
+                <h3>🔧 Выполните скрипт:</h3>
+                <div class="code-block">
+# Скопируйте эту команду в Termux:
+pkg install git -y && \
+git clone https://github.com/ваш-репозиторий/android-wifi-password-recovery.git && \
+cd android-wifi-password-recovery && \
+bash scripts/termux-root.sh
+                </div>
+                <button class="btn btn-success" onclick="copyToClipboard('pkg install git -y && git clone https://github.com/ваш-репозиторий/android-wifi-password-recovery.git && cd android-wifi-password-recovery && bash scripts/termux-root.sh')">
+                    📋 Скопировать команду
+                </button>
+            </div>
+            
+            <div class="method-card">
+                <h3>📱 Альтернативный запуск через QR:</h3>
+                <div class="qr-code" id="termuxQr"></div>
+                <p>Отсканируйте QR код через приложение Termux</p>
+            </div>
+        </div>
+        
+        <!-- Метод 2: ADB Backup -->
+        <div class="card">
+            <h2><span class="android-version android-4">4</span> <span class="android-version android-9">9</span> Метод 2: ADB Backup (без root)</h2>
+            
+            <div class="method-card">
+                <h3>🖥️ Требуется компьютер с ADB:</h3>
+                <ol>
+                    <li>Включите "Отладку по USB" в настройках разработчика</li>
+                    <li>Подключите телефон к ПК</li>
+                    <li>Скачайте скрипт для ПК:</li>
+                </ol>
+                <a href="scripts/adb-backup-method.sh" class="btn" download>📥 Скачать ADB скрипт</a>
+            </div>
+        </div>
+        
+        <!-- Метод 3: Для Android 10+ -->
+        <div class="card">
+            <h2><span class="android-version android-10">10+</span> Метод 3: Android 10 и выше</h2>
+            
+            <div class="method-card">
+                <h3>🔓 Требуется root (Magisk):</h3>
+                <p>1. Установите Magisk и получите root</p>
+                <p>2. Установите модуль "MagiskHide Props Config"</p>
+                <p>3. Используйте специальный модуль для WiFi паролей</p>
+                
+                <div class="warning">
+                    <strong>Опасность:</strong> Root доступ может привести к потере гарантии и блокировке банковских приложений!
+                </div>
+            </div>
+        </div>
+        
+        <!-- Метод 4: Приложение -->
+        <div class="card">
+            <h2>📱 Метод 4: Собственное приложение</h2>
+            
+            <div class="method-card">
+                <h3>Android приложение (требует root):</h3>
+                <p>Скачайте и установите APK файл:</p>
+                <a href="apps/wifi-password-extractor.apk" class="btn btn-warning" download>
+                    ⬇️ Скачать приложение
+                </a>
+                <p class="warning">Приложение требует root права и работает только на Android 4-9</p>
+            </div>
+        </div>
+        
+        <!-- Быстрые команды -->
+        <div class="card">
+            <h2>⚡ Быстрые команды</h2>
+            
+            <div class="method-card">
+                <button class="btn" onclick="showCommand('termux')">Termux команда</button>
+                <button class="btn" onclick="showCommand('adb')">ADB команда</button>
+                <button class="btn" onclick="showCommand('shell')">ADB Shell</button>
+                
+                <div id="commandOutput" class="code-block hidden"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Определение версии Android
+        function detectAndroidVersion() {
+            const ua = navigator.userAgent.toLowerCase();
+            const match = ua.match(/android\s([0-9]+(?:\.[0-9]+)?)/);
+            const version = match ? parseFloat(match[1]) : null;
+            
+            const infoDiv = document.getElementById('androidInfo');
+            let html = '<h3>📱 Ваше устройство:</h3>';
+            html += `<p><strong>User Agent:</strong> ${navigator.userAgent}</p>`;
+            
+            if (version) {
+                html += `<p><strong>Версия Android:</strong> <span class="android-version ${
+                    version < 10 ? 'android-9' : 'android-10'
+                }">${version}</span></p>`;
+                
+                if (version >= 10) {
+                    html += '<div class="warning">';
+                    html += '<strong>⚠️ На Android 10+ без root получить пароли WiFi невозможно!</strong>';
+                    html += '</div>';
+                } else {
+                    html += '<div style="color: green; padding: 10px; background: #d4edda; border-radius: 5px;">';
+                    html += '✅ На вашей версии Android есть шанс получить пароли WiFi!';
+                    html += '</div>';
+                }
+            }
+            
+            infoDiv.innerHTML = html;
+        }
+        
+        // Команды для копирования
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Команда скопирована в буфер обмена!');
+            });
+        }
+        
+        // Показать команды
+        function showCommand(type) {
+            const output = document.getElementById('commandOutput');
+            output.classList.remove('hidden');
+            
+            let command = '';
+            
+            switch(type) {
+                case 'termux':
+                    command = `# Получить пароли WiFi через Termux (требует root)
+su -c "cat /data/misc/wifi/wpa_supplicant.conf | grep -E 'ssid=|psk=' | sed 's/ssid=/📶 Сеть: /' | sed 's/psk=/🔑 Пароль: /'"`;
+                    break;
+                    
+                case 'adb':
+                    command = `# ADB Backup метод (на ПК)
+adb backup -f wifi.ab com.android.providers.settings
+# Затем используйте backup-extractor.py`;
+                    break;
+                    
+                case 'shell':
+                    command = `# ADB Shell команды
+adb shell
+su
+cat /data/misc/wifi/wpa_supplicant.conf`;
+                    break;
+            }
+            
+            output.innerHTML = command;
+            
+            // Кнопка копирования
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'btn btn-success';
+            copyBtn.textContent = '📋 Скопировать';
+            copyBtn.onclick = () => copyToClipboard(command);
+            
+            output.appendChild(copyBtn);
+        }
+        
+        // Генерация QR кода (простая версия)
+        function generateSimpleQR(text, elementId) {
+            const qrDiv = document.getElementById(elementId);
+            // В реальности используйте библиотеку qrcode.js
+            qrDiv.innerHTML = `<div style="width: 150px; height: 150px; background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                <div style="text-align: center;">
+                    <div style="font-size: 40px;">📱</div>
+                    <small>QR для Termux</small>
+                </div>
+            </div>`;
+        }
+        
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', () => {
+            detectAndroidVersion();
+            generateSimpleQR('termux://run?command=pkg install git', 'termuxQr');
+        });
+    </script>
+</body>
+</html>
