@@ -1,0 +1,37 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:  # Позволяет запускать вручную
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    
+    - name: Create ZIP archive
+      run: |
+        # Создаем архив со всеми файлами
+        zip -r wifi-scanner.zip \
+          index.html \
+          README.md \
+          scripts/ \
+          qr-codes/ \
+          tools/ \
+          -x "*.git*" "*.pyc"
+    
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          wifi-scanner.zip
+          index.html
+          scripts/termux-root.sh
+        body_path: RELEASE_NOTES.md
