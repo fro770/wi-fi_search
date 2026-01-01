@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Быстрый запуск WiFi Scanner</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .btn {
+            display: inline-block;
+            background: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            text-decoration: none;
+            margin: 10px;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: #45a049;
+        }
+        
+        .method {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 5px;
+            display: block;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Быстрый запуск WiFi Scanner</h1>
+        <p>Выберите способ запуска:</p>
+        
+        <div class="method">
+            <h2>🌐 Веб-версия (рекомендуется)</h2>
+            <p>Работает прямо в браузере без установки</p>
+            <a href="index.html" class="btn">▶️ Запустить веб-версию</a>
+        </div>
+        
+        <div class="method">
+            <h2>📱 Termux (для Android с root)</h2>
+            <p>Скопируйте и выполните в Termux:</p>
+            <code id="termuxCommand">
+                curl -s https://raw.githubusercontent.com/fro770/wi-fi_search/main/scripts/termux-root.sh | bash
+            </code>
+            <button class="btn" onclick="copyTermuxCommand()">📋 Скопировать команду</button>
+        </div>
+        
+        <div class="method">
+            <h2>💾 Скачать ZIP архив</h2>
+            <p>Полная версия со всеми файлами</p>
+            <a href="https://github.com/fro770/wi-fi_search/releases/latest/download/wifi-scanner.zip" 
+               class="btn" 
+               download="wifi-scanner.zip">
+                ⬇️ Скачать ZIP
+            </a>
+        </div>
+        
+        <div class="method">
+            <h2>📖 Документация</h2>
+            <a href="README.md" class="btn">📚 Открыть README</a>
+            <a href="https://github.com/fro770/wi-fi_search" class="btn" target="_blank">🔗 GitHub репозиторий</a>
+        </div>
+    </div>
+    
+    <script>
+        function copyTermuxCommand() {
+            const command = document.getElementById('termuxCommand').textContent;
+            navigator.clipboard.writeText(command).then(() => {
+                alert('✅ Команда скопирована! Вставьте в Termux');
+            });
+        }
+        
+        // Автоматически предлагаем веб-версию
+        window.addEventListener('load', () => {
+            const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+            if (isMobile) {
+                console.log('Мобильное устройство обнаружено');
+            }
+        });
+    </script>
+</body>
+</html>
