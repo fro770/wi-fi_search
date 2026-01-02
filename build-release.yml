@@ -1,0 +1,61 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    
+    - name: Create APK
+      run: |
+        mkdir -p apps/
+        # Создаем dummy APK
+        echo "Creating dummy APK..."
+        python3 create-dummy-apk.py
+        
+        # Проверяем размер
+        ls -lh apps/
+    
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        name: WiFi Scanner ${{ github.ref_name }}
+        body: |
+          # 📶 WiFi Password Scanner
+          
+          ## 📱 APK приложение
+          - `wifi-scanner.apk` - Android приложение (требует root)
+          
+          ## 🌐 Веб-версия
+          - `index.html` - Основное веб-приложение
+          - `quick-start.html` - Быстрый запуск
+          
+          ## ⚡ Скрипты
+          - `termux-root.sh` - Для Termux с root
+          - `adb-backup-method.sh` - Для ПК через ADB
+          
+          ## 📦 Полный архив
+          - `wifi-scanner.zip` - Все файлы
+          
+          ### ⚠️ Требования:
+          - Android 4-9: root не обязателен для некоторых методов
+          - Android 10+: обязателен root доступ
+          
+          [Подробная инструкция](README.md)
+        files: |
+          apps/wifi-password-extractor.apk
+          index.html
+          quick-start.html
+          scripts/termux-root.sh
+          wifi-scanner.zip
